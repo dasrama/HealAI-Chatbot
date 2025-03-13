@@ -17,7 +17,7 @@ Welcome to **HealAI**, your AI-powered medical chatbot for Discord! 🏥💡 Whe
 ## 🛠️ Tech Stack
 - **Python** 🐍
 - **Discord API** 🗨️
-- **Ollama AI** 🤖
+- **Gemini** 🤖
 - **FastAPI** ⚡ (for API integration)
 - **SQLite** 🗄️ (for logging symptoms and queries)
 
