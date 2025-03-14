@@ -37,16 +37,14 @@ async def symptoms(ctx, *, symptom):
 
 @bot.command()
 async def disease(ctx, *, disease_name):
-    """Gives detailed information on a disease"""
     query = f"Give me detailed information about {disease_name}."
     response = get_medical_response(query, max_tokens=200)
     await ctx.send(response)
 
-"""
 @bot.command()
 async def firstaid(ctx, *, condition):
     query = f"What are the first aid steps for {condition}?"
-    response = ollama.chat(model="medllama", messages=[{"role": "user", "content": query}])
+    response = get_medical_response(query, max_tokens=100)
     await ctx.send(response["message"]["content"])
 
 @bot.command()
@@ -61,6 +59,6 @@ async def help(ctx):
         "/clearhistory - Delete stored chat history\n"
         "/help - Show this message"
     )
-    await ctx.send(help_text)"""
+    await ctx.send(help_text)
 
 bot.run(token=DISCORD_BOT_TOKEN)   
