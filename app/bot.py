@@ -1,15 +1,15 @@
 import discord
 from discord.ext import commands
-from service.ai_chat import get_medical_response
+from app.service.ai_engine import get_medical_response
 from config import config 
+
+
+DISCORD_BOT_TOKEN = config.get("DISCORD_BOT_TOKEN") 
 
 intents = discord.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
-
-DISCORD_BOT_TOKEN = config.get("DISCORD_BOT_TOKEN") 
-
 
 @bot.event
 async def on_ready():
@@ -48,8 +48,8 @@ async def firstaid(ctx, *, condition):
     await ctx.send(response["message"]["content"])
 
 @bot.command()
-async def help(ctx):
-    help_text = (
+async def info(ctx):
+    info_text = (
         "**Available Commands:**\n"
         "/ask [question] - Ask a medical question\n"
         "/symptoms [symptom] - Get possible causes\n"
@@ -59,6 +59,6 @@ async def help(ctx):
         "/clearhistory - Delete stored chat history\n"
         "/help - Show this message"
     )
-    await ctx.send(help_text)
+    await ctx.send(info_text)
 
 bot.run(token=DISCORD_BOT_TOKEN)   
