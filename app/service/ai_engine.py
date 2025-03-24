@@ -1,9 +1,9 @@
 from google import genai
 from google.genai import types
-from config import config
+from config.setting import Settings
 
 
-GEMINI_API_TOKEN = config.get("GEMINI_API_TOKEN")
+GEMINI_API_TOKEN = Settings().GEMINI_API_TOKEN
 
 def get_medical_response(question, max_tokens = 50):
     client = genai.Client(api_key=GEMINI_API_TOKEN)
@@ -15,7 +15,7 @@ def get_medical_response(question, max_tokens = 50):
 
     User's question: {question} Keep responses **concise but complete**
     """
-    # response = model.generate_content(medical_prompt) 
+    
     response = client.models.generate_content(
         model="gemini-2.0-flash",
         contents=medical_prompt,
