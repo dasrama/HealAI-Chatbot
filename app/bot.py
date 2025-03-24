@@ -1,10 +1,11 @@
 import discord
 from discord.ext import commands
-from app.service.ai_engine import get_medical_response
-from config import config 
+from service.ai_engine import get_medical_response
+from service.memory import get_user_session, store_chat
+from config.setting import Settings 
 
 
-DISCORD_BOT_TOKEN = config.get("DISCORD_BOT_TOKEN") 
+DISCORD_BOT_TOKEN = Settings().DISCORD_BOT_TOKEN 
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -21,12 +22,15 @@ async def message(ctx):
 
 @bot.command()
 async def hello(ctx):
+    print(ctx.author)
     await ctx.send(f"hello {ctx.author} !!")    
 
 
 @bot.command()
 async def ask(ctx, *, question):
+    session_id = get_user_session(ctx.author)
     response = get_medical_response(question=question, max_tokens=100)
+    store_chat(session_id=session_id, user_input=question, bot_response=response)
     await ctx.send(response)
 
 @bot.command()
