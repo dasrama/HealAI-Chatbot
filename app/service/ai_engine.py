@@ -1,6 +1,6 @@
 from google import genai
 from google.genai import types
-from config.setting import Settings
+from app.config.setting import Settings
 
 
 GEMINI_API_TOKEN = Settings().GEMINI_API_TOKEN
