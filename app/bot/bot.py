@@ -1,8 +1,8 @@
 import discord
 from discord.ext import commands
-from service.ai_engine import get_medical_response
-from service.memory import get_user_session, store_chat
-from config.setting import Settings 
+from app.service.ai_engine import get_medical_response
+from app.service.memory import get_user_session, store_chat
+from app.config.setting import Settings 
 
 
 DISCORD_BOT_TOKEN = Settings().DISCORD_BOT_TOKEN 
