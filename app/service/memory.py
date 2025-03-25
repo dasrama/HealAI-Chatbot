@@ -1,4 +1,4 @@
-from config.config import r
+from app.config.config import r
 import uuid
 
 
