@@ -5,8 +5,6 @@ from app.service.memory import get_user_session, store_chat
 from app.config.setting import Settings 
 
 
-DISCORD_BOT_TOKEN = Settings().DISCORD_BOT_TOKEN 
-
 intents = discord.Intents.default()
 intents.message_content = True
 
@@ -64,5 +62,3 @@ async def info(ctx):
         "/help - Show this message"
     )
     await ctx.send(info_text)
-
-bot.run(token=DISCORD_BOT_TOKEN)   
