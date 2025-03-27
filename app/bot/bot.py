@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from app.service.ai_engine import get_medical_response
 from app.service.memory import get_user_session, store_chat
-from app.config.setting import Settings 
+from app.config.settings import Settings 
 
 
 intents = discord.Intents.default()

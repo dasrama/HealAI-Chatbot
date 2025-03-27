@@ -1,5 +1,5 @@
 from app.bot.bot import bot
-from app.config.setting import Settings
+from app.config.settings import Settings
 
 
 if __name__=="__main__":
