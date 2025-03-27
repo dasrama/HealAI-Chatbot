@@ -1,0 +1,28 @@
+version: '3'
+
+name: heal-ai
+
+services:
+    redis: 
+        image: redis/redis-stack
+        container_name: redis
+        ports:
+            - "6379:6379"
+            - "8001:8001"
+        restart: unless-stopped
+
+    backend:
+        build: .
+        container_name: backend_service
+        ports:
+            - "8000:8000"
+        depends_on:
+            - redis
+
+        environment:
+            - REDIS_HOST=${REDIS_HOST}
+            - REDIS_PORT=6379
+            - GEMINI_API_TOKEN=${GEMINI_API_TOKEN}
+            - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+        
+        restart: unless-stopped
