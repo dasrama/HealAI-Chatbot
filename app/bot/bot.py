@@ -1,9 +1,11 @@
+import httpx
 import discord
 from discord.ext import commands
+from discord.ext.commands import Context
 from app.service.ai_engine import get_medical_response
 from app.service.memory import get_user_session, store_chat
 from app.config.settings import Settings 
-
+from app.backend.models.chat import ChatPayload
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -23,31 +25,52 @@ async def hello(ctx):
     print(ctx.author)
     await ctx.send(f"hello {ctx.author} !!")    
 
+@bot.command()
+async def ask(ctx: Context, *, question):
+    payload = ChatPayload(
+        user_id=ctx.author.id,
+        question=question
+    )
+    async with httpx.AsyncClient() as client:
+        x = client.post("f{URL}/ask", json=payload.model_dump())
+        response = x.json()
+    await ctx.send(response["answer"])
 
 @bot.command()
-async def ask(ctx, *, question):
-    session_id = get_user_session(ctx.author)
-    response = get_medical_response(question=question, max_tokens=100)
-    store_chat(session_id=session_id, user_input=question, bot_response=response)
-    await ctx.send(response)
+async def symptoms(ctx: Context, *, symptom):
+    question = f"What are the possible causes of {symptom}?"
+    payload = ChatPayload(
+        user_id=ctx.author.id,
+        question=question
+    )
+    async with httpx.AsyncClient() as client:
+        x = client.post("f{URL}/symptoms", json=payload.model_dump())
+        response = x.json()
+    await ctx.send(response["answer"])
 
 @bot.command()
-async def symptoms(ctx, *, symptom):
-    query = f"What are the possible causes of {symptom}?"
-    response = get_medical_response(query, max_tokens=70)
-    await ctx.send(response)
+async def disease(ctx: Context, *, disease_name):
+    question = f"Give me detailed information about {disease_name}."
+    payload = ChatPayload(
+        user_id=ctx.author.id,
+        question=question
+    )
+    async with httpx.AsyncClient() as client:
+        x = client.post("f{URL}/symptoms", json=payload.model_dump())
+        response = x.json()
+    await ctx.send(response["answer"])
 
 @bot.command()
-async def disease(ctx, *, disease_name):
-    query = f"Give me detailed information about {disease_name}."
-    response = get_medical_response(query, max_tokens=200)
-    await ctx.send(response)
-
-@bot.command()
-async def firstaid(ctx, *, condition):
-    query = f"What are the first aid steps for {condition}?"
-    response = get_medical_response(query, max_tokens=100)
-    await ctx.send(response["message"]["content"])
+async def firstaid(ctx: Context, *, condition):
+    question = f"What are the first aid steps for {condition}?"
+    payload = ChatPayload(
+        user_id=ctx.author.id,
+        question=question
+    )
+    async with httpx.AsyncClient() as client:
+        x = client.post("f{URL}/symptoms", json=payload.model_dump())
+        response = x.json()
+    await ctx.send(response["answer"])
 
 @bot.command()
 async def info(ctx):
