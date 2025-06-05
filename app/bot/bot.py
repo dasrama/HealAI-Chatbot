@@ -2,10 +2,9 @@ import httpx
 import discord
 from discord.ext import commands
 from discord.ext.commands import Context
-from app.service.ai_engine import get_medical_response
-from app.service.memory import get_user_session, store_chat
-from app.config.settings import Settings 
+
 from app.backend.models.chat import ChatPayload
+
 
 intents = discord.Intents.default()
 intents.message_content = True
