@@ -4,7 +4,7 @@ from app.config.settings import Settings
 from contextlib import asynccontextmanager
 import asyncio
 
-
+    
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     bot_task = asyncio.create_task(bot.start(Settings().DISCORD_BOT_TOKEN))
@@ -14,3 +14,12 @@ async def lifespan(app: FastAPI):
     await bot_task
 
 app = FastAPI(lifespan=lifespan)
+
+
+# from app.bot.bot import bot
+# from app.config.settings import Settings
+
+
+# if __name__=="__main__":
+#     bot.run(Settings().DISCORD_BOT_TOKEN)
+    
