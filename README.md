@@ -106,9 +106,3 @@ PRs are always welcome! 🚀
 
 💙 Stay healthy, stay informed, and let **HealAI** be your trusted AI health companion! 🏥🤖
 
-
-
-
-
-
-
