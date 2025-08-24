@@ -5,6 +5,7 @@ from discord.ext import commands
 from discord.ext.commands import Context
 
 from service.ai_engine import get_medical_response
+from utils.sanitise import contains_markdown_code
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -23,6 +24,9 @@ async def hello(ctx: Context):
 
 @bot.command()
 async def ask(ctx: Context, *, question):
+    if contains_markdown_code(question):
+        await ctx.send("Please do not include markdown or code blocks in your input.")
+        return
     try:
         async with ctx.typing():    
             response = await asyncio.to_thread(get_medical_response, question)
@@ -30,8 +34,12 @@ async def ask(ctx: Context, *, question):
     except Exception as e:
         await ctx.send("Sorry, something went wrong while processing your request.")
 
+
 @bot.command()
 async def symptoms(ctx: Context, *, symptom):
+    if contains_markdown_code(symptom):
+        await ctx.send("Please do not include markdown or code blocks in your input.")
+        return
     try:  
         async with ctx.typing():  
             question = f"What are the possible causes of {symptom}?"
@@ -44,6 +52,9 @@ async def symptoms(ctx: Context, *, symptom):
 
 @bot.command()
 async def disease(ctx: Context, *, disease_name):
+    if contains_markdown_code(disease_name):
+        await ctx.send("Please do not include markdown or code blocks in your input.")
+        return
     try:
         async with ctx.typing():  
             question = f"Give me detailed information about {disease_name}."
@@ -52,8 +63,12 @@ async def disease(ctx: Context, *, disease_name):
     except Exception as e:
         await ctx.send("Sorry, something went wrong while processing your request")
 
+
 @bot.command()
 async def firstaid(ctx: Context, *, condition):
+    if contains_markdown_code(condition):
+        await ctx.send("Please do not include markdown or code blocks in your input.")
+        return
     try:
         async with ctx.typing():  
             question = f"What are the first aid steps for {condition}?"
@@ -61,7 +76,6 @@ async def firstaid(ctx: Context, *, condition):
         await ctx.send(response)
     except Exception as e:
         await ctx.send("Sorry, something went wrong while processing your request")    
-
 
 
 @bot.command()
