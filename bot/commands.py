@@ -1,4 +1,6 @@
 import discord
+import asyncio
+from discord import Embed
 from discord.ext import commands
 from discord.ext.commands import Context
 
@@ -21,39 +23,54 @@ async def hello(ctx: Context):
 
 @bot.command()
 async def ask(ctx: Context, *, question):
-    response = get_medical_response(question)
-    await ctx.send(response)
-
+    try:
+        async with ctx.typing():    
+            response = await asyncio.to_thread(get_medical_response, question)
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send("Sorry, something went wrong while processing your request.")
 
 @bot.command()
 async def symptoms(ctx: Context, *, symptom):
-    question = f"What are the possible causes of {symptom}?"
-    response = get_medical_response(question)
-    await ctx.send(response)
+    try:  
+        async with ctx.typing():  
+            question = f"What are the possible causes of {symptom}?"
+            response = await asyncio.to_thread(get_medical_response, question)
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send("Sorry, something went wrong while processing your request")
+        print(str(e))
 
 
 @bot.command()
 async def disease(ctx: Context, *, disease_name):
-    question = f"Give me detailed information about {disease_name}."
-    response = get_medical_response(question)
-    await ctx.send(response)
-
+    try:
+        async with ctx.typing():  
+            question = f"Give me detailed information about {disease_name}."
+            response = await asyncio.to_thread(get_medical_response, question)
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send("Sorry, something went wrong while processing your request")
 
 @bot.command()
 async def firstaid(ctx: Context, *, condition):
-    question = f"What are the first aid steps for {condition}?"
-    response = get_medical_response(question)
-    await ctx.send(response)
+    try:
+        async with ctx.typing():  
+            question = f"What are the first aid steps for {condition}?"
+            response = await asyncio.to_thread(get_medical_response, question)
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send("Sorry, something went wrong while processing your request")    
+
 
 
 @bot.command()
 async def info(ctx: Context):
-    info_text = (
-        "**Available Commands:**\n"
-        "!ask [question] - Ask a medical question\n"
-        "!symptoms [symptom] - Get possible causes\n"
-        "!disease [disease_name] - Learn about diseases\n"
-        "!firstaid [condition] - Get first aid tips\n"
-        "!info - Show this message"
-    )
-    await ctx.send(info_text)
+    embed = Embed(title="Available Commands", color=0x1abc9c)
+    embed.add_field(name="!ask [question]", value="Ask a medical question", inline=False)
+    embed.add_field(name="!symptoms [symptom]", value="Get possible causes", inline=False)
+    embed.add_field(name="!disease [disease_name]", value="Learn about diseases", inline=False)
+    embed.add_field(name="!firstaid [condition]", value="Get first aid tips", inline=False)
+    embed.add_field(name="!info", value="Show this message", inline=False)
+
+    await ctx.send(embed=embed)
